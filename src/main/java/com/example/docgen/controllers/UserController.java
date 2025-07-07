@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,6 +28,13 @@ public class UserController {
 		List<UserResponseDTO> usersDTO = users.stream().map(UserResponseDTO::new).toList();
 
 		return ResponseEntity.ok(usersDTO);
+	}
+
+	@GetMapping("/{id}")
+	public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id) {
+		User user = userService.findById(id);
+		return ResponseEntity.ok(new UserResponseDTO(user));
+
 	}
 
 }

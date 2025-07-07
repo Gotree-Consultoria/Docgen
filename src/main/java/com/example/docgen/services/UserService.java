@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.docgen.entities.User;
+import com.example.docgen.exceptions.ResourceNotFoundException;
 import com.example.docgen.repositories.UserRepository;
 
 @Service
@@ -30,7 +31,10 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User findById(Long id) {
-		return null;
+
+		return userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Usuário com ID " + id + " não encontrado."));
+
 	}
 
 	@Override

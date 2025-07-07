@@ -4,6 +4,8 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 public class StandardError {
 
 	private Instant timestamp;
@@ -12,6 +14,8 @@ public class StandardError {
 	private String message;
 	private String path;
 
+	// Aparece apenas se ela não estiver vazia
+	@JsonInclude(JsonInclude.Include.NON_EMPTY)
 	private List<ValidationError> validationErrors = new ArrayList<>();
 
 	public StandardError(Instant timestamp, Integer status, String error, String message, String path) {
