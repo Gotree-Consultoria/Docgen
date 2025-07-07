@@ -5,9 +5,11 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.docgen.dto.UserRequestDTO;
 import com.example.docgen.dto.UserResponseDTO;
 import com.example.docgen.entities.User;
 import com.example.docgen.services.UserService;
@@ -36,5 +38,10 @@ public class UserController {
 		return ResponseEntity.ok(new UserResponseDTO(user));
 
 	}
+	
+	
+	
+
+	
 
 }

@@ -2,6 +2,7 @@ package com.example.docgen.services;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -34,6 +35,20 @@ public class UserService implements UserDetailsService {
 
 		return userRepository.findById(id)
 				.orElseThrow(() -> new ResourceNotFoundException("Usuário com ID " + id + " não encontrado."));
+
+	}
+
+	public User insertUser(User user) {
+		userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+			throw new DataIntegrityViolationException("Email já cadastrado: " + user.getEmail());
+		});
+
+		// Criptografia de senhas
+
+		String ecryptedPassword = passwordEncoder.encode(user.getPassword());
+		user.setPassword(ecryptedPassword);
+
+		return userRepository.save(user);
 
 	}
 
