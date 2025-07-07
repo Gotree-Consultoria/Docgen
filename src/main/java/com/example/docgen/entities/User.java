@@ -11,8 +11,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.example.docgen.entities.enums.UserRole;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -37,14 +41,15 @@ public class User implements Serializable, UserDetails {
 	private LocalDate birthDate;
 	private String phone;
 	private String cpf;
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private String role;
+	private UserRole role;
 
 	public User() {
 	}
 
 	public User(Long id, String name, String email, String password, LocalDate birthDate, String phone, String cpf,
-			String role) {
+			UserRole role) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -61,7 +66,7 @@ public class User implements Serializable, UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 
-		return List.of(new SimpleGrantedAuthority(this.role));
+		return List.of(new SimpleGrantedAuthority(role.getRoleName()));
 	}
 
 	@Override
@@ -157,11 +162,11 @@ public class User implements Serializable, UserDetails {
 		return Period.between(this.birthDate, LocalDate.now()).getYears();
 	}
 
-	public String getRole() {
+	public UserRole getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
+	public void setRole(UserRole role) {
 		this.role = role;
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.example.docgen.entities.User;
+import com.example.docgen.entities.enums.UserRole;
 import com.example.docgen.repositories.UserRepository;
 import com.example.docgen.services.UserService;
 
@@ -34,11 +35,11 @@ public class TestConfig {
 				user.setCpf("10488775400"); // CPF válido
 				user.setPhone("81996272911");
 				user.setBirthDate(LocalDate.of(2001, 11, 27));
-				user.setRole("ROLE_ADMIN");
+				user.setRole(UserRole.ADMIN);
 
 				userRepository.save(user);
 				System.out.println("Usuário admin criado com sucesso.");
-				
+
 			}
 
 		};

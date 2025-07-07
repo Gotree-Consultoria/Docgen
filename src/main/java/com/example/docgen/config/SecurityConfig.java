@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import com.example.docgen.entities.enums.UserRole;
 import com.example.docgen.services.UserService;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -28,10 +29,10 @@ public class SecurityConfig {
 
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().hasRole("ADMIN") // 🔓
-																											// Permitir
-																											// apenas
-																											// admin
+		http.csrf(csrf -> csrf.disable()).authorizeHttpRequests(auth -> auth.anyRequest().hasRole(UserRole.ADMIN.name()) // 🔓
+		// Permitir
+		// apenas
+		// admin
 
 		).httpBasic(withDefaults());
 

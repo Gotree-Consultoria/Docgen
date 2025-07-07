@@ -29,7 +29,7 @@ public class UserResponseDTO {
 		this.name = entity.getName();
 		this.email = entity.getEmail();
 		this.phone = entity.getPhone();
-		this.role = entity.getRole();
+		this.role = entity.getRole().getRoleName();
 
 	}
 
