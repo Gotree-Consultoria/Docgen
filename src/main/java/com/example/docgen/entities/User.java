@@ -3,8 +3,15 @@ package com.example.docgen.entities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_user")
-public class User implements Serializable {
+public class User implements Serializable, UserDetails {
 
 	/**
 	 * 
@@ -30,11 +37,14 @@ public class User implements Serializable {
 	private LocalDate birthDate;
 	private String phone;
 	private String cpf;
+	@Column(nullable = false)
+	private String role;
 
 	public User() {
 	}
 
-	public User(Long id, String name, String email, String password, LocalDate birthDate, String phone, String cpf) {
+	public User(Long id, String name, String email, String password, LocalDate birthDate, String phone, String cpf,
+			String role) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -43,7 +53,53 @@ public class User implements Serializable {
 		this.birthDate = birthDate;
 		this.phone = phone;
 		this.cpf = cpf;
+		this.role = role;
 	}
+
+	// region UserDetails
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+
+		return List.of(new SimpleGrantedAuthority(this.role));
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return email;
+	}
+
+	@Override
+	public String getPassword() {
+		return password;
+
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	// endregion
+
+	// region Getters e Setters
 
 	public Long getId() {
 		return id;
@@ -67,10 +123,6 @@ public class User implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
 	}
 
 	public void setPassword(String password) {
@@ -105,6 +157,18 @@ public class User implements Serializable {
 		return Period.between(this.birthDate, LocalDate.now()).getYears();
 	}
 
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	// endregion
+
+	// region hashCode e Equals
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -122,4 +186,5 @@ public class User implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
+	// endregion
 }

@@ -33,6 +33,9 @@ public class UserRequestDTO {
 
 	@CPF(message = "CPF inválido")
 	private String cpf;
+	
+	
+	
 
 	public String getName() {
 		return name;
