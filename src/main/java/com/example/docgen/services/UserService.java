@@ -29,6 +29,10 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	public User findById(Long id) {
+		return null;
+	}
+
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 		System.out.println("🔍 Buscando usuário por email: " + email);
