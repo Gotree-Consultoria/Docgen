@@ -1,6 +1,8 @@
 package com.example.docgen.exceptions;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StandardError {
 
@@ -10,6 +12,8 @@ public class StandardError {
 	private String message;
 	private String path;
 
+	private List<ValidationError> validationErrors = new ArrayList<>();
+
 	public StandardError(Instant timestamp, Integer status, String error, String message, String path) {
 		super();
 		this.timestamp = timestamp;
@@ -17,7 +21,10 @@ public class StandardError {
 		this.error = error;
 		this.message = message;
 		this.path = path;
+
 	}
+
+	// Region Getters/Setters
 
 	public Instant getTimestamp() {
 		return timestamp;
@@ -58,5 +65,15 @@ public class StandardError {
 	public void setPath(String path) {
 		this.path = path;
 	}
+
+	public List<ValidationError> getValidationErros() {
+		return validationErrors;
+	}
+
+	public void addValidationError(String field, String message) {
+		this.validationErrors.add(new ValidationError(field, message));
+	}
+
+	// endregion
 
 }
