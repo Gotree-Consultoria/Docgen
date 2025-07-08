@@ -23,16 +23,6 @@ public class UserResponseDTO {
 		this.role = role;
 	}
 
-	public UserResponseDTO(User entity) {
-
-		this.id = entity.getId();
-		this.name = entity.getName();
-		this.email = entity.getEmail();
-		this.phone = entity.getPhone();
-		this.role = entity.getRole().getRoleName();
-
-	}
-
 	public Long getId() {
 		return id;
 	}

@@ -65,31 +65,25 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-	
+
+	// Verifica exceção de formato de datas.
 	@ExceptionHandler(HttpMessageNotReadableException.class)
-	public ResponseEntity<StandardError> handleInvalidFormat(HttpMessageNotReadableException e, HttpServletRequest request) {
-	    HttpStatus status = HttpStatus.BAD_REQUEST;
+	public ResponseEntity<StandardError> handleInvalidFormat(HttpMessageNotReadableException e,
+			HttpServletRequest request) {
+		HttpStatus status = HttpStatus.BAD_REQUEST;
 
-	    String mensagem = "Erro ao processar requisição.";
+		String mensagem = "Erro ao processar requisição.";
 
-	    // Verifica se a causa foi uma data malformada
-	    Throwable cause = e.getCause();
-	    if (cause instanceof InvalidFormatException invalidEx && invalidEx.getTargetType().equals(LocalDate.class)) {
-	        mensagem = "Formato de data inválido. Use o padrão: dd/MM/yyyy.";
-	    }
+		// Verifica se a causa foi uma data malformada
+		Throwable cause = e.getCause();
+		if (cause instanceof InvalidFormatException invalidEx && invalidEx.getTargetType().equals(LocalDate.class)) {
+			mensagem = "Formato de data inválido. Use o padrão: dd/MM/yyyy.";
+		}
 
-	    StandardError err = new StandardError(
-	        Instant.now(),
-	        status.value(),
-	        "Erro de leitura do corpo JSON",
-	        mensagem,
-	        request.getRequestURI()
-	    );
+		StandardError err = new StandardError(Instant.now(), status.value(), "Erro de leitura do corpo JSON", mensagem,
+				request.getRequestURI());
 
-	    return ResponseEntity.status(status).body(err);
+		return ResponseEntity.status(status).body(err);
 	}
-	
-	
-	
 
 }

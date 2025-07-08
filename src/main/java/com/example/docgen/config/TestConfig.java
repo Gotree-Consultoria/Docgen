@@ -14,6 +14,8 @@ import com.example.docgen.entities.enums.UserRole;
 import com.example.docgen.repositories.UserRepository;
 import com.example.docgen.services.UserService;
 
+import br.com.caelum.stella.validation.CPFValidator;
+
 @Configuration
 @Profile("test")
 public class TestConfig {
@@ -27,6 +29,8 @@ public class TestConfig {
 	CommandLineRunner run(UserService userService) {
 		return args -> {
 
+			
+	
 			if (userRepository.findByEmail("admin@admin").isEmpty()) {
 				User user = new User();
 				user.setName("Administrador");

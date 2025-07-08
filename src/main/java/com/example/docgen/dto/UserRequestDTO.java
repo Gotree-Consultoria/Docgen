@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.caelum.stella.bean.validation.CPF;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
@@ -31,7 +31,7 @@ public class UserRequestDTO {
 	@NotBlank(message = "Seu telefone é obrigatório")
 	private String phone;
 
-	@CPF(message = "CPF inválido")
+	
 	private String cpf;
 	
 	

@@ -45,20 +45,16 @@ public class UserController {
 
 	@PostMapping
 	public ResponseEntity<UserResponseDTO> insertUser(@RequestBody @Valid UserRequestDTO dto) {
-		User user = UserMapperDTO.toEntity(dto);
-		User createdUser = userService.insertUser(user);
-		return ResponseEntity.ok().body(UserMapperDTO.toDto(createdUser));
+		User createdUser = userService.insertUser(dto);
+		return ResponseEntity.ok(UserMapperDTO.toDto(createdUser));
 	}
 
 	@PostMapping("/batch")
 	public ResponseEntity<BatchUserInsertResponseDTO> insertMultiplerUsers(
-			@RequestBody @Valid List<UserRequestDTO> userDTO) {
-		List<User> users = userDTO.stream().map(UserMapperDTO::toEntity).toList();
+			@RequestBody List<@Valid UserRequestDTO> userDTOs) {
 
-		BatchUserInsertResponseDTO result = userService.insertUsers(users);
-
+		BatchUserInsertResponseDTO result = userService.insertUsers(userDTOs);
 		return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(result);
-
 	}
 
 }
