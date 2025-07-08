@@ -97,6 +97,9 @@ public class UserService implements UserDetailsService {
 			throw new CpfValidationException("CPF inválido: " + userDTO.getCpf());
 		}
 	}
+	
+	
+	// Deleta todo os o usuarios do banco docgentest apenas em perfil de dev.
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

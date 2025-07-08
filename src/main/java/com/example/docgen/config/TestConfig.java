@@ -14,10 +14,10 @@ import com.example.docgen.entities.enums.UserRole;
 import com.example.docgen.repositories.UserRepository;
 import com.example.docgen.services.UserService;
 
-import br.com.caelum.stella.validation.CPFValidator;
+
 
 @Configuration
-@Profile("test")
+@Profile("dev")
 public class TestConfig {
 
 	@Autowired
