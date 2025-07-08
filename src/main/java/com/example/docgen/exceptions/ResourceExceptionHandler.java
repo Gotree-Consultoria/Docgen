@@ -2,6 +2,8 @@ package com.example.docgen.exceptions;
 
 import java.time.Instant;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
@@ -84,6 +86,19 @@ public class ResourceExceptionHandler {
 				request.getRequestURI());
 
 		return ResponseEntity.status(status).body(err);
+	}
+
+	// Verifica exceção em cpf
+	@ExceptionHandler(CpfValidationException.class)
+	public ResponseEntity<Object> handleCpfValidationException(CpfValidationException ex) {
+		Map<String, Object> body = new HashMap<>();
+		body.put("timestamp", Instant.now());
+		body.put("status", HttpStatus.BAD_REQUEST.value());
+		body.put("error", "Validação de CPF");
+		body.put("message", ex.getMessage());
+		body.put("path", "/users");
+
+		return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
 	}
 
 }

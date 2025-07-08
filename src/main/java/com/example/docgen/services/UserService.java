@@ -16,6 +16,7 @@ import com.example.docgen.dto.UserMapperDTO;
 import com.example.docgen.dto.UserRequestDTO;
 import com.example.docgen.dto.UserResponseDTO;
 import com.example.docgen.entities.User;
+import com.example.docgen.exceptions.CpfValidationException;
 import com.example.docgen.exceptions.ResourceNotFoundException;
 import com.example.docgen.repositories.UserRepository;
 
@@ -93,7 +94,7 @@ public class UserService implements UserDetailsService {
 		try {
 			cpfValidator.assertValid(userDTO.getCpf());
 		} catch (InvalidStateException e) {
-			throw new IllegalArgumentException("CPF inválido: " + userDTO.getCpf());
+			throw new CpfValidationException("CPF inválido: " + userDTO.getCpf());
 		}
 	}
 
