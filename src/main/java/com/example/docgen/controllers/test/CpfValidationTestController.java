@@ -16,7 +16,7 @@ import jakarta.validation.Valid;
 @RequestMapping("/cpf-test")
 public class CpfValidationTestController {
 
-	@PostMapping("/cpf-test")
+	@PostMapping("/cpf-test")  
     public ResponseEntity<String> validateCpf(@RequestBody @Valid UserRequestDTO dto) {
         CPFValidator cpfValidator = new CPFValidator();
 
