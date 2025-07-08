@@ -10,6 +10,10 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.example.docgen.dto.BatchUserInsertResponseDTO;
+import com.example.docgen.dto.FailedUserDTO;
+import com.example.docgen.dto.UserMapperDTO;
+import com.example.docgen.dto.UserResponseDTO;
 import com.example.docgen.entities.User;
 import com.example.docgen.exceptions.ResourceNotFoundException;
 import com.example.docgen.repositories.UserRepository;
@@ -41,7 +45,7 @@ public class UserService implements UserDetailsService {
 
 	public User insertUser(User user) {
 
-		validateUniqueEmail(user.getEmail());
+		validateUser(user);
 		// Criptografia de senhas
 
 		String ecryptedPassword = passwordEncoder.encode(user.getPassword());
@@ -51,22 +55,32 @@ public class UserService implements UserDetailsService {
 
 	}
 
-	public List<User> insertUsers(List<User> users) {
-		List<User> createdUsers = new ArrayList<>();
+	// Insere uma lista de usuarios
+	public BatchUserInsertResponseDTO insertUsers(List<User> users) {
+		List<UserResponseDTO> successUsers = new ArrayList<>();
+		List<FailedUserDTO> failedUsers = new ArrayList<>();
 
-		for (User user : createdUsers) {
-			validateUniqueEmail(user.getEmail());
-			user.setPassword(passwordEncoder.encode(user.getPassword()));
-			createdUsers.add(userRepository.save(user));
+		for (User user : users) {
+			try {
+				validateUser(user);
+				user.setPassword(passwordEncoder.encode(user.getPassword()));
+				User saved = userRepository.save(user);
+				successUsers.add(UserMapperDTO.toDto(saved));
+
+			} catch (Exception e) {
+				failedUsers.add(new FailedUserDTO(user.getEmail(), e.getMessage()));
+			}
 		}
 
-		return createdUsers;
-
+		return new BatchUserInsertResponseDTO(successUsers, failedUsers);
 	}
 
-	public void validateUniqueEmail(String email) {
-		userRepository.findByEmail(email).ifPresent(user -> {
-			throw new DataIntegrityViolationException("Email já cadastrado: " + email);
+	// Validação de segurança
+	public void validateUser(User user) {
+
+		// Verifica se existe email duplicado
+		userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+			throw new DataIntegrityViolationException("Email já cadastrado: " + u.getEmail());
 		});
 	}
 

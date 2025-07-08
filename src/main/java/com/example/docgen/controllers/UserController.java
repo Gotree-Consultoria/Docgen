@@ -2,6 +2,7 @@ package com.example.docgen.controllers;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.docgen.dto.BatchUserInsertResponseDTO;
 import com.example.docgen.dto.UserMapperDTO;
 import com.example.docgen.dto.UserRequestDTO;
 import com.example.docgen.dto.UserResponseDTO;
@@ -46,6 +48,17 @@ public class UserController {
 		User user = UserMapperDTO.toEntity(dto);
 		User createdUser = userService.insertUser(user);
 		return ResponseEntity.ok().body(UserMapperDTO.toDto(createdUser));
+	}
+
+	@PostMapping("/batch")
+	public ResponseEntity<BatchUserInsertResponseDTO> insertMultiplerUsers(
+			@RequestBody @Valid List<UserRequestDTO> userDTO) {
+		List<User> users = userDTO.stream().map(UserMapperDTO::toEntity).toList();
+
+		BatchUserInsertResponseDTO result = userService.insertUsers(users);
+
+		return ResponseEntity.status(HttpStatus.MULTI_STATUS).body(result);
+
 	}
 
 }
