@@ -1,5 +1,6 @@
 package com.example.docgen.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -39,10 +40,8 @@ public class UserService implements UserDetailsService {
 	}
 
 	public User insertUser(User user) {
-		userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
-			throw new DataIntegrityViolationException("Email já cadastrado: " + user.getEmail());
-		});
 
+		validateUniqueEmail(user.getEmail());
 		// Criptografia de senhas
 
 		String ecryptedPassword = passwordEncoder.encode(user.getPassword());
@@ -50,6 +49,25 @@ public class UserService implements UserDetailsService {
 
 		return userRepository.save(user);
 
+	}
+
+	public List<User> insertUsers(List<User> users) {
+		List<User> createdUsers = new ArrayList<>();
+
+		for (User user : createdUsers) {
+			validateUniqueEmail(user.getEmail());
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
+			createdUsers.add(userRepository.save(user));
+		}
+
+		return createdUsers;
+
+	}
+
+	public void validateUniqueEmail(String email) {
+		userRepository.findByEmail(email).ifPresent(user -> {
+			throw new DataIntegrityViolationException("Email já cadastrado: " + email);
+		});
 	}
 
 	@Override
