@@ -1,6 +1,6 @@
 package com.example.docgen.dto;
 
-import com.example.docgen.entities.User;
+
 
 public class UserResponseDTO {
 

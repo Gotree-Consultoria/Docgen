@@ -15,6 +15,7 @@ import com.example.docgen.dto.FailedUserDTO;
 import com.example.docgen.dto.UserMapperDTO;
 import com.example.docgen.dto.UserRequestDTO;
 import com.example.docgen.dto.UserResponseDTO;
+import com.example.docgen.dto.UserUpdateDTO;
 import com.example.docgen.entities.User;
 import com.example.docgen.exceptions.CpfValidationException;
 import com.example.docgen.exceptions.ResourceNotFoundException;
@@ -60,6 +61,19 @@ public class UserService implements UserDetailsService {
 
 	}
 
+	public User updateUser(Long id, UserUpdateDTO dto) {
+		User user = userRepository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundException("Usuário com ID: " + id + " não encontrado."));
+
+		if (dto.getName() != null) {
+			user.setName(dto.getName());
+		}
+		if (dto.getPhone() != null) {
+			user.setPhone(dto.getPhone());
+		}
+		return userRepository.save(user);
+	}
+
 	// Insere uma lista de usuarios
 	public BatchUserInsertResponseDTO insertUsers(List<UserRequestDTO> userDTOs) {
 		List<UserResponseDTO> successUsers = new ArrayList<>();
@@ -97,9 +111,6 @@ public class UserService implements UserDetailsService {
 			throw new CpfValidationException("CPF inválido: " + userDTO.getCpf());
 		}
 	}
-	
-	
-	// Deleta todo os o usuarios do banco docgentest apenas em perfil de dev.
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

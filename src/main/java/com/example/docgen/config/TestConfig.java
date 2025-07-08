@@ -14,10 +14,8 @@ import com.example.docgen.entities.enums.UserRole;
 import com.example.docgen.repositories.UserRepository;
 import com.example.docgen.services.UserService;
 
-
-
 @Configuration
-@Profile("dev")
+@Profile("test")
 public class TestConfig {
 
 	@Autowired
@@ -29,8 +27,6 @@ public class TestConfig {
 	CommandLineRunner run(UserService userService) {
 		return args -> {
 
-			
-	
 			if (userRepository.findByEmail("admin@admin").isEmpty()) {
 				User user = new User();
 				user.setName("Administrador");

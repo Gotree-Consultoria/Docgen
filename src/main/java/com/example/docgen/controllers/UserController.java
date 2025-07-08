@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +16,7 @@ import com.example.docgen.dto.BatchUserInsertResponseDTO;
 import com.example.docgen.dto.UserMapperDTO;
 import com.example.docgen.dto.UserRequestDTO;
 import com.example.docgen.dto.UserResponseDTO;
+import com.example.docgen.dto.UserUpdateDTO;
 import com.example.docgen.entities.User;
 import com.example.docgen.services.UserService;
 
@@ -47,6 +49,13 @@ public class UserController {
 	public ResponseEntity<UserResponseDTO> insertUser(@RequestBody @Valid UserRequestDTO dto) {
 		User createdUser = userService.insertUser(dto);
 		return ResponseEntity.ok(UserMapperDTO.toDto(createdUser));
+	}
+
+	@PutMapping("/{id}")
+	public ResponseEntity<UserResponseDTO> updateUser(@PathVariable Long id, @RequestBody @Valid UserUpdateDTO dto) {
+		User updateUser = userService.updateUser(id, dto);
+		return ResponseEntity.ok(UserMapperDTO.toDto(updateUser));
+
 	}
 
 	@PostMapping("/batch")
